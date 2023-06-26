@@ -2,6 +2,7 @@ package com.example.data.constants
 
 import android.R
 import android.annotation.TargetApi
+import android.app.Activity
 import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
@@ -15,8 +16,10 @@ import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.loader.content.CursorLoader
 import androidx.recyclerview.widget.RecyclerView
 import okhttp3.MediaType
@@ -36,13 +39,13 @@ class Utilities {
             val connectivityManager =
                 context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val activeNetworkInfo = connectivityManager.activeNetworkInfo
-            if (!(activeNetworkInfo != null && activeNetworkInfo.isConnected)) {
+            /*if (!(activeNetworkInfo != null && activeNetworkInfo.isConnected)) {
                 Toast.makeText(
                     context,
                     "تأكد من الإتصال بالإنترنت",
                     Toast.LENGTH_LONG
                 ).show()
-            }
+            }*/
             return activeNetworkInfo != null && activeNetworkInfo.isConnected
         }
 
@@ -62,4 +65,5 @@ class Utilities {
             return RequestBody.create(MediaType.parse("text/plain"), data)
         }
     }
+
 }

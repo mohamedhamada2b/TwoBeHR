@@ -1,10 +1,14 @@
 package com.twoB.hr.di
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.widget.Toast
 import com.example.data.constants.Constants
 import com.twob.data.remote.Api
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -55,4 +59,14 @@ object ApiModule {
     @Singleton
     @Provides
     fun provideApiService(retrofit: Retrofit): Api = retrofit.create(Api::class.java)
+
+    @Singleton
+    @Provides
+    @Named("network_connection")
+    fun isNetworkAvailable(@ApplicationContext context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetworkInfo = connectivityManager.activeNetworkInfo
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected
+    }
 }

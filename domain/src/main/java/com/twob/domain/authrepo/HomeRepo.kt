@@ -8,4 +8,5 @@ interface HomeRepo {
     fun get_user_branches(national_id:String):Single<List<UserBranchesItem>>
     fun add_finger_print(empid:String,locationfingerprint:String,locationchoosing:String,distance:String,latfp:String,lonfp:String):Single<FingerPrint>
 
+
 }

@@ -17,8 +17,9 @@ class HomeViewModel @Inject constructor(private val branchesUseCase: HomeUseCase
      lateinit var branches_observable:Single<List<UserBranchesItem>>
      lateinit var finger_print_observable:Single<FingerPrint>
      var finger_print_live_data = MutableLiveData<FingerPrint>()
+     var branches_title_live_data = MutableLiveData<List<String>>()
      val compositeDisposable = CompositeDisposable()
-
+     var branchestitlelist:ArrayList<String> = ArrayList()
      fun get_branches(national_id: String) {
           branches_observable = branchesUseCase.get_user_branches(national_id)
                .subscribeOn(Schedulers.io())
@@ -27,6 +28,10 @@ class HomeViewModel @Inject constructor(private val branchesUseCase: HomeUseCase
           }
 
      private fun setData(userBranches: List<UserBranchesItem>) {
+          for (UserBranchesItem in userBranches){
+               branchestitlelist.add(UserBranchesItem.locName)
+          }
+          branches_title_live_data.value = branchestitlelist
           branches_live_data.value = userBranches
      }
 
@@ -40,6 +45,11 @@ class HomeViewModel @Inject constructor(private val branchesUseCase: HomeUseCase
                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
           compositeDisposable.add(finger_print_observable.subscribe({fingerprint:FingerPrint -> setfingerprintData(fingerprint)},{e:Throwable-> e.message.toString()}))
 
+     }
+
+     override fun onCleared() {
+          super.onCleared()
+          compositeDisposable.clear()
      }
 }
 
